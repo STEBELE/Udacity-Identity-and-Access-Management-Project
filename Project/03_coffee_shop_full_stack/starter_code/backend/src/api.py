@@ -105,7 +105,7 @@ def post_new_drink(jwt):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks/<id>', methods = ["PATCH"])
+@app.route('/drinks/<int:id>', methods = ["PATCH"])
 @requires_auth('patch:drinks')
 def update_drink(jwt,id):
     drink = Drink.query.filter(Drink.id == id).one_or_none()
@@ -142,7 +142,7 @@ def update_drink(jwt,id):
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks/<id>', methods = ['DELETE'])
+@app.route('/drinks/<int:id>', methods = ['DELETE'])
 @requires_auth('delete:drinks')
 def delete_drink(jwt, id):
     drink = Drink.query.filter(Drink.id == id).one_or_none()
