@@ -28,6 +28,8 @@ db_drop_and_create_all()
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+
+
 @app.route('/drinks')
 def get_drinks():
     drinks = Drink.query.all()
@@ -49,6 +51,8 @@ def get_drinks():
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+
+
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
 def get_drinks_detail(jwt):
@@ -72,6 +76,8 @@ def get_drinks_detail(jwt):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
+
+
 @app.route('/drinks', methods = ['POST'])
 @requires_auth('post:drinks')
 def post_new_drink(jwt):
@@ -94,6 +100,8 @@ def post_new_drink(jwt):
     except:
         abort(404)
 
+
+
 '''
 @TODO implement endpoint
     PATCH /drinks/<id>
@@ -105,6 +113,8 @@ def post_new_drink(jwt):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
 '''
+
+
 @app.route('/drinks/<int:id>', methods = ["PATCH"])
 @requires_auth('patch:drinks')
 def update_drink(jwt,id):
@@ -132,6 +142,8 @@ def update_drink(jwt,id):
     except:
         abort(400)
 
+
+
 '''
 @TODO implement endpoint
     DELETE /drinks/<id>
@@ -142,7 +154,9 @@ def update_drink(jwt,id):
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks/<int:id>', methods = ['DELETE'])
+
+
+@app.route('/drinks/<int:id>', methods=['DELETE'])
 @requires_auth('delete:drinks')
 def delete_drink(jwt, id):
     drink = Drink.query.filter(Drink.id == id).one_or_none()
@@ -162,6 +176,8 @@ def delete_drink(jwt, id):
         abort(422)
 
 # Error Handling
+
+
 '''
 Example error handling for unprocessable entity
 '''
@@ -191,6 +207,8 @@ def unprocessable(error):
 @TODO implement error handler for 404
     error handler should conform to general task above
 '''
+
+
 @app.errorhandler(404)
 def resource_not_found(error):
     return jsonify({
@@ -198,6 +216,7 @@ def resource_not_found(error):
         "error": 404,
         "message": "resource not found"
     }), 404
+
 
 @app.errorhandler(405)
 def method_not_allowed(error):
@@ -207,8 +226,9 @@ def method_not_allowed(error):
         "message": "method not allowed"
     }), 405
 
+
 @app.errorhandler(400)
-def Bad_request(error):
+def bad_request(error):
     return jsonify({
         "success": False,
         "error": 400,
@@ -217,7 +237,7 @@ def Bad_request(error):
 
 
 @app.errorhandler(500)
-def Internal_Server_Error(error):
+def internal_server_error(error):
     return jsonify({
         "success": False,
         "error": 500,
@@ -228,10 +248,7 @@ def Internal_Server_Error(error):
 @TODO implement error handler for AuthError
     error handler should conform to general task above
 '''
-class AuthError(Exception):
-    def __init__(self, error, status_code):
-        self.error = error
-        self.status_code = status_code
+
 
 @app.errorhandler(AuthError)
 def resource_not_found(error):
