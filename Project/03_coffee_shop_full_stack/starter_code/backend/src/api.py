@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, jsonify, abort
+from matplotlib.pyplot import title
 from sqlalchemy import exc
 import json
 from flask_cors import CORS
@@ -85,16 +86,14 @@ def post_new_drink(jwt):
     body = request.get_json()
 
     try:
-        title = body['title']
-        recipe = body['recipe']
-        drink = Drink()
-        drink.title = title
-        # converts a Python object into a json string.
-        drink.recipe = json.dumps(recipe)
-        drink.insert()
+        new_title = body['title']
+        new_recipe = body['recipe']
+        new_drink = Drink(title = new_title, recipe = json.dumps(new_recipe))
+
+        new_drink.insert()
         return jsonify({
             "success": True, 
-            "drinks": [drink.long()]
+            "drinks": new_drink.long()
         })
 
     except:
